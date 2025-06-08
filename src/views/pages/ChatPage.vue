@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Blank</ion-title>
+        <ion-title>Chat</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -14,57 +14,74 @@
       </ion-header>
 
       <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>
-          Start with Ionic
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://ionicframework.com/docs/components"
-            >UI Components</a
-          >
-        </p>
+        <ion-list>
+          <ion-item v-for="(msg, index) in messages" :key="index">
+            <ion-label>
+              <h2>{{ msg.sender }}</h2>
+              <p>{{ msg.text }}</p>
+              <small>{{ new Date(msg.timestamp).toLocaleTimeString() }}</small>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-input
+          v-model="newMessage"
+          placeholder="Введите сообщение"
+          @keydown.enter="send"
+        />
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
+import { signalRService } from '@/services/signalr.service';
+import { ChatMessage } from '@/types/ChatMessage';
 import {
   IonContent,
   IonHeader,
   IonPage,
   IonTitle,
   IonToolbar,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonInput,
 } from '@ionic/vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+
+const messages = ref<ChatMessage[]>([]);
+
+const newMessage = ref('');
+
+const send = async () => {
+  const text = newMessage.value.trim();
+  if (!text) return;
+
+  try {
+    await signalRService.sendMessage('User1', text);
+    newMessage.value = '';
+  } catch (err) {
+    console.error('Ошибка при отправке сообщения:', err);
+  }
+};
+
+onMounted(async () => {
+  try {
+    await signalRService.connect();
+
+    signalRService.onMessage((msg) => {
+      messages.value.push(msg);
+      console.log(msg);
+    });
+  } catch (err) {
+    console.error('Не удалось подключиться к SignalR:', err);
+  }
+});
+
+onUnmounted(() => {
+  signalRService.disconnect();
+});
 </script>
 
-<style scoped>
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>
+<style scoped></style>

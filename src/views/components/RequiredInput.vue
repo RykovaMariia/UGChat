@@ -1,26 +1,24 @@
 <template>
-  <ion-item>
-    <ion-input
-      ref="inputRef"
-      v-model="name"
-      required
-      :placeholder
-      :label-placement
-      :autofocus
-      :error-text="`${label} is required`"
-      @ionInput="validate"
-      @ionBlur="markTouched"
-    >
-      <div v-if="label" slot="label">
-        {{ label }} <ion-text color="danger">*</ion-text>
-      </div>
-    </ion-input>
-  </ion-item>
+  <ion-input
+    ref="inputRef"
+    v-model="name"
+    required
+    :placeholder
+    :label-placement
+    :autofocus
+    :error-text="`${label} is required`"
+    @ionInput="validate"
+    @ionBlur="markTouched"
+  >
+    <div v-if="label" slot="label">
+      {{ label }} <ion-text color="danger">*</ion-text>
+    </div>
+  </ion-input>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IonInput, IonItem, IonText } from '@ionic/vue';
+import { IonInput, IonText } from '@ionic/vue';
 import { InputInputEventDetail } from '@ionic/core';
 import { IonInputCustomEvent } from '@ionic/core/components';
 
