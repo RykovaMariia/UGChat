@@ -6,10 +6,7 @@
       class="message"
       :class="{ my_message: isMine }"
     >
-      <span
-        v-if="!isMine"
-        class="sender"
-        >{{ msg.sender }}</span
+      <span class="sender">{{ msg.sender }}</span
       ><br />
       <span class="text">{{ msg.text }}</span>
       <div class="time">{{ time }}</div>
