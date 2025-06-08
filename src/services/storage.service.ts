@@ -17,7 +17,7 @@ export class StorageService<TState> {
 
   getData<TKey extends keyof TState>(
     key: TKey,
-    validate?: (data: unknown) => data is TState[TKey]
+    validate?: (data: unknown) => data is TState[TKey],
   ): TState[TKey] | null {
     const storageKey = this.getStorageKey(key.toString());
     const data = localStorage.getItem(storageKey);
@@ -32,7 +32,7 @@ export class StorageService<TState> {
       }
       return result as TState[TKey];
     } catch (error) {
-      console.error('Error parsing local storage JSON:', error);
+      console.error('Failed to parse JSON from localStorage:', error);
       return null;
     }
   }

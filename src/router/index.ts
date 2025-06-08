@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/chat',
     name: routeNames.chat,
-    component: () => import('@/views/pages/ChatPage.vue'),
+    component: () => import('@/views/pages/Chat/ChatPage.vue'),
     beforeEnter: authGuard,
   },
   {
