@@ -3,9 +3,14 @@
     <ion-row class="ion-align-items-center">
       <ion-col size="9">
         <ion-item lines="none">
-          <ion-input
+          <ion-textarea
             v-model.trim="message"
             placeholder="Please enter your message"
+            :auto-grow="true"
+            :rows="1"
+            class="input"
+            autofocus
+            @keydown.enter="handleEnter"
           />
         </ion-item>
       </ion-col>
@@ -15,7 +20,6 @@
           color="primary"
           type="submit"
           :disabled="!message"
-          @click="sendMessage"
         >
           Send
         </ion-button>
@@ -26,7 +30,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IonInput, IonButton, IonItem, IonCol, IonRow } from '@ionic/vue';
+import { IonTextarea, IonButton, IonItem, IonCol, IonRow } from '@ionic/vue';
 import { authService } from '@/services/auth.service';
 import { signalRService } from '@/services/signalr.service';
 
@@ -44,4 +48,17 @@ const sendMessage = async () => {
     console.error('Failed to send message:', err);
   }
 };
+
+const handleEnter = (event: KeyboardEvent) => {
+  if (event.shiftKey) return;
+  event.preventDefault();
+  sendMessage();
+};
 </script>
+
+<style scoped>
+.input {
+  max-height: 10rem;
+  overflow-y: auto;
+}
+</style>

@@ -10,7 +10,10 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
+    <ion-content
+      :fullscreen="true"
+      ref="contentRef"
+    >
       <div
         id="container"
         class="ion-padding"
@@ -34,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick } from 'vue';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonButtons, IonFooter } from '@ionic/vue';
 
 import { signalRService } from '@/services/signalr.service';
@@ -48,12 +51,23 @@ import MessageInput from './components/MessageInput.vue';
 const messages = ref<ChatMessage[]>([]);
 const currentUser = authService.getUserName();
 
+const contentRef = ref<InstanceType<typeof IonContent> | null>(null);
+
+const scrollToBottom = async () => {
+  if (contentRef.value) {
+    await contentRef.value.$el.scrollToBottom(300);
+  }
+};
+
 onMounted(async () => {
   try {
     await signalRService.connect();
 
     signalRService.onMessage((msg) => {
       messages.value.push(msg);
+      nextTick(() => {
+        scrollToBottom();
+      });
     });
   } catch (err) {
     console.error('Failed to connect to SignalR:', err);

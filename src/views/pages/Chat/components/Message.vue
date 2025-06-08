@@ -79,6 +79,7 @@ const time = computed(() => formatDateTime(msg.timestamp));
 .text {
   font-size: 1rem;
   color: var(--ion-color-light-medium-shade);
+  white-space: pre-line;
 }
 
 .my_message .text {
@@ -89,7 +90,7 @@ const time = computed(() => formatDateTime(msg.timestamp));
   text-align: right;
   font-size: 0.65rem;
   color: var(--ion-color-medium-tint);
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .my_message .time {
