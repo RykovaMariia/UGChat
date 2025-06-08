@@ -19,22 +19,14 @@ import { computed } from 'vue';
 import { ChatMessage } from '@/types/ChatMessage';
 import { authService } from '@/services/auth.service';
 import { IonCol, IonRow } from '@ionic/vue';
+import { formatDateTime } from '../utils/format-date-time';
 
 const { msg } = defineProps<{ msg: ChatMessage }>();
 const currentUser = authService.getUserName();
 
 const isMine = computed(() => msg.sender === currentUser);
 
-const time = computed(() =>
-  new Date(msg.timestamp).toLocaleString('en-US', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true,
-  }),
-);
+const time = computed(() => formatDateTime(msg.timestamp));
 </script>
 
 <style scoped>
