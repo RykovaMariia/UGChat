@@ -47,7 +47,7 @@ export class StorageService<TState> {
 }
 
 export type StorageState = {
-  name: string;
+  userName: string;
 };
 
 export const storageService = new StorageService<StorageState>('UGChat');
