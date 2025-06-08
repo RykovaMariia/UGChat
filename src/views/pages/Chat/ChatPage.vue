@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>UGChat</ion-title>
+        <ion-title slot="start">UGChat</ion-title>
         <ion-buttons slot="end">
           {{ currentUser }}
           <LogoutButton />

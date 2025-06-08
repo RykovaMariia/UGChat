@@ -31,10 +31,26 @@ const time = computed(() => formatDateTime(msg.timestamp));
 
 <style scoped>
 .message {
-  padding: 10px;
-  border-radius: 10px;
-  background-color: var(--ion-color-medium);
-  margin-bottom: 8px;
+  position: relative;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: var(--ion-color-light);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+/* Tail on the left side */
+.message::after {
+  content: '';
+  position: absolute;
+  bottom: 0.1rem;
+  width: 0;
+  height: 0;
+  border: 1rem solid transparent;
+  left: -1.6rem;
+  border-right-color: var(--ion-color-light);
 }
 
 .my_message {
@@ -42,21 +58,41 @@ const time = computed(() => formatDateTime(msg.timestamp));
   color: var(--ion-color-light-shade);
 }
 
+/* Tail on the right side */
+.my_message::after {
+  right: -0.5rem;
+  left: auto;
+  border-left-color: var(--ion-color-primary);
+  border-right: 0;
+}
+
 .sender {
   font-size: 0.75rem;
   font-weight: bold;
+  color: var(--ion-color-primary-shade);
+}
+
+.my_message .sender {
   color: var(--ion-color-light-shade);
 }
 
 .text {
   font-size: 1rem;
-  color: var(--ion-color-light-shade);
+  color: var(--ion-color-light-medium-shade);
+}
+
+.my_message .text {
+  color: var(--ion-color-light-tint);
 }
 
 .time {
   text-align: right;
   font-size: 0.65rem;
+  color: var(--ion-color-medium-tint);
+  margin-top: 0.5rem;
+}
+
+.my_message .time {
   color: var(--ion-color-light-shade);
-  margin-top: 5px;
 }
 </style>
